@@ -1,2 +1,6 @@
 [build]
+  base = "tenyears_oneday_CMS_OK"
   publish = "."
+
+[functions]
+  directory = "netlify/functions"
