@@ -1,65 +1,103 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>十年一日 TEN YEARS ONE DAY</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#F8F9F7,#D4E7D1);color:#2f3e34}
-    header{max-width:980px;margin:0 auto;padding:26px 18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-    .brand{display:flex;flex-direction:column;align-items:flex-start}
-    .brand h1{margin:0;font-family:serif;font-weight:700;letter-spacing:.04em}
-    .brand .sub{margin-top:6px;opacity:.8}
-    nav{max-width:980px;margin:0 auto;padding:0 18px 10px;display:flex;gap:10px;flex-wrap:wrap}
-    nav a{font-size:13px;text-decoration:none;color:#2f3e34;opacity:.85;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.55);backdrop-filter:blur(6px)}
-    main{max-width:980px;margin:0 auto;padding:18px}
-    .card{background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.06);border-radius:18px;padding:22px}
-    footer{margin-top:30px;background:#2f3e34;color:#fff}
-    footer .inner{max-width:980px;margin:0 auto;padding:14px 18px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
-    .pill{display:inline-flex;gap:8px;align-items:center}
-    .pill a{color:#fff;text-decoration:none;opacity:.92}
-  </style>
+
+  <!-- 字體：接近 Canva 的中文 serif + 英文 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
-  <header>
-    <div class="brand">
-      <h1>十年一日</h1>
-      <div class="sub"><em>tenyears_oneday</em></div>
+  <header class="topbar">
+    <div class="wrap topbar__row">
+      <div class="brand">
+        <div class="brand__title">十年一日</div>
+        <div class="brand__sub">tenyears_oneday</div>
+      </div>
+
+      <div class="icons">
+        <button class="iconbtn" aria-label="搜尋">🔍</button>
+        <button class="iconbtn" aria-label="相機">📷</button>
+        <button class="iconbtn" aria-label="LINE">LINE</button>
+        <a class="iconbtn" href="cart.html" aria-label="購物車">🛒</a>
+        <button class="iconbtn" aria-label="會員">👤</button>
+      </div>
     </div>
-    <div class="pill">
-      <a href="https://www.instagram.com/tenyears_oneday?igsh=MW9hcjBnaTdjNzc0MQ%3D%3D&utm_source=qr" target="_blank" rel="noopener">IG</a>
-      <span style="opacity:.5">｜</span>
-      <a href="https://line.me/R/ti/p/@396kwrga" target="_blank" rel="noopener">LINE</a>
-    </div>
+
+    <nav class="nav">
+      <div class="wrap nav__row">
+        <a class="pill is-active" href="#about">關於我們</a>
+        <a class="pill" href="#products">全系列 🌸</a>
+        <a class="pill" href="#silver">純銀飾品 ✨</a>
+        <a class="pill" href="#promo">優惠活動 🎁</a>
+        <a class="pill" href="#know">飾品小知識 💡</a>
+        <a class="pill" href="#faq">相關問題 ❗</a>
+      </div>
+    </nav>
   </header>
 
-  <nav>
-    <a href="#about">關於我們</a>
-    <a href="#all">全系列🌸</a>
-    <a href="#silver">純銀飾品✨</a>
-    <a href="#promo">優惠活動🎁</a>
-    <a href="#know">飾品小知識💡</a>
-    <a href="#faq">相關問題❗️</a>
-  </nav>
+  <main class="hero">
+    <div class="wrap">
+      <h1 class="hero__title">十年一日</h1>
+      <p class="hero__tagline">時光淬鍊・破碎中尋覓永恆<br>每一件飾品 都是時間的詩篇</p>
 
-  <main>
-    <section id="about" class="card">
-      <h2 style="margin-top:0">🤍 歡迎來到 十年一日</h2>
-      <p style="margin:10px 0 0; line-height:1.9">
-        TEN YEARS ONE DAY<br/>
-        Every piece tells a story.
-      </p>
-      <p style="line-height:1.9; margin:14px 0 0; opacity:.9">
-        這是「含後台骨架」的上線包（/admin）。下一步把網站連到 GitHub + 開啟 Netlify Identity，就能用手機登入後台上傳圖片與改內容。
-      </p>
-    </section>
+      <section class="card">
+        <div class="card__head">
+          <span class="heart">🤍</span>
+          <div>
+            <div class="card__title">歡迎來到 十年一日</div>
+            <div class="card__en">TEN YEARS ONE DAY</div>
+            <div class="card__en2">Every piece tells a story.</div>
+          </div>
+        </div>
+
+        <p class="card__text">
+          承載著十年以上的友情，<br>
+          繼續延續下去的動力。<br><br>
+          每一件飾品，<br>
+          都是時間累積的溫柔。<br><br>
+          <strong>謝謝你，把重要的一天交給十年一日 ✨</strong>
+        </p>
+      </section>
+
+      <section class="features">
+        <div class="feature">💎 精選材質</div>
+        <div class="feature">✨ 獨特設計</div>
+        <div class="feature">🚚 便利配送</div>
+      </section>
+
+      <section id="products" class="products">
+        <div class="products__title">精選商品</div>
+        <div id="product-list" class="grid"></div>
+      </section>
+    </div>
   </main>
 
-  <footer>
-    <div class="inner">
-      <div>© 十年一日 tenyears_oneday</div>
-      <div style="opacity:.9">後台入口：<a href="/admin/" style="color:#fff;text-decoration:underline;">/admin</a></div>
-    </div>
+  <footer class="footer">
+    <div class="wrap">© 十年一日 tenyears_oneday</div>
   </footer>
+
+  <script type="module">
+    import { PRODUCTS } from "./js/config.js";
+
+    const list = document.getElementById("product-list");
+    PRODUCTS.forEach(p => {
+      list.innerHTML += `
+        <a class="item" href="product.html?id=${p.id}">
+          <div class="item__img">
+            <img src="${p.image}" alt="${p.name}">
+          </div>
+          <div class="item__name">${p.name}</div>
+          <div class="item__price">NT$ ${p.price}</div>
+        </a>
+      `;
+    });
+  </script>
 </body>
 </html>
