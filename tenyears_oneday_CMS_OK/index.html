@@ -11,6 +11,78 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css" />
+<style>
+  :root{
+    --bg1:#e8f0ea;
+    --bg2:#dfeae2;
+    --card:#ffffffcc;
+    --text:#2f3b33;
+    --muted:#5a6a60;
+    --line:#e7efe9;
+    --radius:18px;
+  }
+
+  body{
+    margin:0;
+    color:var(--text);
+    background: linear-gradient(180deg,var(--bg1),var(--bg2));
+    font-family: "Noto Serif TC","Noto Sans TC",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  }
+
+  .container{max-width:980px;margin:0 auto;padding:18px 16px 48px;}
+  header{padding:18px 0 8px;}
+  header h1{font-size:34px;margin:0 0 6px;letter-spacing:2px}
+  header .sub{font-style:italic;color:var(--muted);margin-bottom:10px}
+
+  nav{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 18px;}
+  nav a{
+    text-decoration:none;
+    color:var(--text);
+    background:#ffffffb8;
+    border:1px solid var(--line);
+    padding:10px 14px;
+    border-radius:999px;
+    font-size:14px;
+    transition:.15s ease;
+  }
+  nav a:hover{transform:translateY(-1px);background:#fff}
+
+  .hero{
+    border:1px solid var(--line);
+    background: #ffffffa8;
+    border-radius:var(--radius);
+    padding:18px 18px 8px;
+    backdrop-filter: blur(6px);
+  }
+
+  .card{
+    margin:14px auto 10px;
+    max-width:760px;
+    background: var(--card);
+    border:1px solid var(--line);
+    border-radius: 22px;
+    padding:22px 18px;
+    box-shadow: 0 14px 40px rgba(0,0,0,.08);
+  }
+
+  .card h2{margin:0 0 10px;font-size:22px;letter-spacing:1px}
+  .card .en{font-style:italic;color:var(--muted);margin:6px 0 12px}
+  .card p{line-height:1.9;margin:10px 0;color:#2f3b33}
+
+  footer{
+    margin-top:26px;
+    padding:16px 0 0;
+    color:var(--muted);
+    text-align:center;
+    font-size:14px;
+  }
+
+  @media (max-width:640px){
+    header h1{font-size:28px}
+    .card{padding:18px 14px}
+    nav a{padding:9px 12px}
+  }
+</style>
 </head>
 
 <body>
