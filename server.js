@@ -26,6 +26,8 @@ app.get("/products", (req, res) => {
       price: 1280,
       status: "上架",
       image: "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/N-A.jpg"
+      desc: "極簡風吊飾，日常百搭。",
+  stock: 3
     },
     {
       id: "E-B",
@@ -35,6 +37,8 @@ app.get("/products", (req, res) => {
       price: 880,
       status: "上架",
       image: "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/E-B.jpg"
+      desc: "極簡風吊飾，日常百搭。",
+  stock: 3
     },
     {
       id: "R-C",
@@ -44,6 +48,8 @@ app.get("/products", (req, res) => {
       price: 1580,
       status: "上架",
       image: "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/R-C.jpg"
+      desc: "極簡風吊飾，日常百搭。",
+  stock: 3
     },
     {
       id: "O-D",
@@ -53,6 +59,8 @@ app.get("/products", (req, res) => {
       price: 420,
       status: "上架",
       image: "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/O-D.jpg"
+      desc: "極簡風吊飾，日常百搭。",
+  stock: 3
     }
   ]);
 });
