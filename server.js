@@ -2,31 +2,14 @@ import express from "express";
 
 const app = express();
 
-// 允許 GitHub Pages 呼叫（很重要，否則前台會被瀏覽器擋）
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-Admin-Key");
-  if (req.method === "OPTIONS") return res.sendStatus(200);
-  next();
-});
-
-app.get("/", (req, res) => {
-  res.send("tenyears oneday api is running");
-});
-
-import express from "express";
-
-const app = express();
-
 // ✅ 讓前端可送 JSON
 app.use(express.json({ limit: "2mb" }));
 
 // ✅ CORS：讓 GitHub Pages 可呼叫 Render API
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // 先全開，之後可改成只允許你的網域
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-Admin-Key");
   if (req.method === "OPTIONS") return res.sendStatus(204);
   next();
 });
@@ -35,115 +18,85 @@ app.get("/", (req, res) => {
   res.send("tenyears oneday api is running");
 });
 
-// ✅ 用記憶體保存商品（Render 重啟會還原）
-let PRODUCTS = [
-  {
-    id: "N-A",
-    title: "項鍊 A",
-    category: "項鍊",
-    series: "全系列",
-    price: 1280,
-    status: "上架",
-    image: "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/N-A.jpg",
-    desc: "（商品介紹待補）"
-  },
-  {
-    id: "E-B",
-    title: "耳環 B",
-    category: "耳環",
-    series: "全系列",
-    price: 880,
-    status: "上架",
-    image: "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/E-B.jpg",
-    desc: "（商品介紹待補）"
-  },
-  {
-    id: "R-C",
-    title: "戒指 C",
-    category: "戒指",
-    series: "全系列",
-    price: 1580,
-    status: "上架",
-    image: "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/R-C.jpg",
-    desc: "（商品介紹待補）"
-  },
-  {
-    id: "O-D",
-    title: "吊飾 D",
-    category: "其他",
-    series: "全系列",
-    price: 420,
-    status: "上架",
-    image: "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/O-D.jpg",
-    desc: "（商品介紹待補）"
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycby06D9BwO2SF3CauIxlBfb2cCyEvuaMLnoOPPhwoyQh57T_wP8Al9L2fQuw2617cLF8/exec";
+
+// ✅ GET 全部商品（從 Google Sheet 讀）
+app.get("/products", async (req, res) => {
+  try {
+    const r = await fetch(`${GAS_URL}?path=products`, { cache: "no-store" });
+    if (!r.ok) return res.status(500).json({ error: "GAS_FETCH_FAILED", status: r.status });
+
+    let data = await r.json();
+    if (!Array.isArray(data)) data = [];
+
+    // 只回傳上架
+    data = data.filter(p => (p.status || "上架") === "上架");
+
+    // price 保險轉數字
+    data = data.map(p => ({
+      ...p,
+      price: typeof p.price === "number" ? p.price : Number(p.price || 0),
+    }));
+
+    res.json(data);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "SERVER_ERROR" });
   }
-];
-
-// ✅ GET 全部商品
-app.get("/products", (req, res) => {
-  res.json(PRODUCTS);
 });
 
-// ✅ GET 單一商品（之後你說要補 /products/:id，我先幫你一併加好，不影響 admin）
-app.get("/products/:id", (req, res) => {
-  const p = PRODUCTS.find(x => String(x.id) === String(req.params.id));
-  if (!p) return res.status(404).json({ error: "NOT_FOUND" });
-  res.json(p);
+// ✅ GET 單一商品（從 Google Sheet 讀）
+app.get("/products/:id", async (req, res) => {
+  try {
+    const id = String(req.params.id || "");
+    const r = await fetch(`${GAS_URL}?path=products&id=${encodeURIComponent(id)}`, { cache: "no-store" });
+    const data = await r.json();
+
+    if (!r.ok || !data || data.error) return res.status(404).json({ error: "NOT_FOUND" });
+
+    data.price = typeof data.price === "number" ? data.price : Number(data.price || 0);
+
+    res.json(data);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "SERVER_ERROR" });
+  }
 });
 
-// ✅ POST 新增商品
-app.post("/products", (req, res) => {
-  const b = req.body || {};
-  if (!b.id) return res.status(400).json({ error: "ID_REQUIRED" });
+// ✅ 設定（從 settings 表讀）
+app.get("/settings", async (req, res) => {
+  try {
+    const r = await fetch(`${GAS_URL}?path=settings`, { cache: "no-store" });
+    if (!r.ok) return res.status(500).json({ error: "GAS_FETCH_FAILED", status: r.status });
 
-  const exists = PRODUCTS.some(x => String(x.id) === String(b.id));
-  if (exists) return res.status(409).json({ error: "ID_EXISTS" });
-
-  const item = {
-    id: String(b.id),
-    title: String(b.title || "（未命名）"),
-    category: String(b.category || "其他"),
-    series: String(b.series || "全系列"),
-    price: Number(b.price || 0),
-    status: String(b.status || "上架"),
-    image: String(b.image || ""),
-    desc: String(b.desc || "")
-  };
-
-  PRODUCTS.unshift(item);
-  res.status(201).json(item);
+    const data = await r.json();
+    res.json(data && typeof data === "object" ? data : {});
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "SERVER_ERROR" });
+  }
 });
 
-// ✅ PUT 修改商品（A~F 全欄位）
-app.put("/products/:id", (req, res) => {
-  const id = String(req.params.id);
-  const idx = PRODUCTS.findIndex(x => String(x.id) === id);
-  if (idx === -1) return res.status(404).json({ error: "NOT_FOUND" });
+// （可選）兼容舊的 /promos：讓前台如果還在用 promos 不會壞
+app.get("/promos", async (req, res) => {
+  try {
+    const r = await fetch(`${GAS_URL}?path=settings`, { cache: "no-store" });
+    const s = await r.json();
 
-  const b = req.body || {};
-  const updated = {
-    ...PRODUCTS[idx],
-    title: (b.title !== undefined) ? String(b.title) : PRODUCTS[idx].title,
-    category: (b.category !== undefined) ? String(b.category) : PRODUCTS[idx].category,
-    series: (b.series !== undefined) ? String(b.series) : PRODUCTS[idx].series,
-    price: (b.price !== undefined) ? Number(b.price) : PRODUCTS[idx].price,
-    status: (b.status !== undefined) ? String(b.status) : PRODUCTS[idx].status,
-    image: (b.image !== undefined) ? String(b.image) : PRODUCTS[idx].image,
-    desc: (b.desc !== undefined) ? String(b.desc) : PRODUCTS[idx].desc
-  };
-
-  PRODUCTS[idx] = updated;
-  res.json(updated);
+    res.json({
+      shipping: { enabled: !!s.shipping_enabled, fee: Number(s.shipping_fee || 0), freeOver: Number(s.free_shipping_threshold || 0) },
+      discounts: {
+        firstOrder: { enabled: true, rate: Number(s.first_purchase_discount || 1) },
+        birthdayMonth: { enabled: true, rate: Number(s.birthday_discount || 1) },
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "SERVER_ERROR" });
+  }
 });
 
-// ✅ DELETE 刪除商品
-app.delete("/products/:id", (req, res) => {
-  const id = String(req.params.id);
-  const before = PRODUCTS.length;
-  PRODUCTS = PRODUCTS.filter(x => String(x.id) !== id);
-  if (PRODUCTS.length === before) return res.status(404).json({ error: "NOT_FOUND" });
-  res.json({ ok: true });
-});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running on port", PORT));
@@ -158,6 +111,3 @@ app.get("/promos", (req, res) => {
     },
   });
 });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server running on port", PORT));
