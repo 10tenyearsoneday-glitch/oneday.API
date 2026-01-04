@@ -101,13 +101,3 @@ app.get("/promos", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running on port", PORT));
 
-
-app.get("/promos", (req, res) => {
-  res.json({
-    shipping: { enabled: true, fee: 60, freeOver: 1000 },
-    discounts: {
-      firstOrder: { enabled: true, rate: 0.9 },
-      birthdayMonth: { enabled: true, rate: 0.85 },
-    },
-  });
-});
