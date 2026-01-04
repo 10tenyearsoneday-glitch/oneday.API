@@ -18,10 +18,14 @@ app.get("/", (req, res) => {
 // 先用示意資料（之後再換成資料庫/Google Sheet 都行）
 app.get("/products", (req, res) => {
   res.json([
-    { id: "N-A", title: "項鍊 A", category: "項鍊", series: "全系列", price: 1280, status: "上架" },
-    { id: "E-B", title: "耳環 B", category: "耳環", series: "全系列", price: 880, status: "上架" },
-    { id: "R-C", title: "戒指 C", category: "戒指", series: "全系列", price: 1580, status: "上架" },
-    { id: "O-D", title: "吊飾 D", category: "其他", series: "全系列", price: 420, status: "上架" },
+    { id: "N-A", title: "項鍊 A", category: "項鍊", series: "全系列", price: 1280, status: "上架",
+    "image": "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/O-D.jpg"},
+    { id: "E-B", title: "耳環 B", category: "耳環", series: "全系列", price: 880, status: "上架",
+    "image": "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/O-D.jpg"},
+    { id: "R-C", title: "戒指 C", category: "戒指", series: "全系列", price: 1580, status: "上架",
+    "image": "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/O-D.jpg"},
+    { id: "O-D", title: "吊飾 D", category: "其他", series: "全系列", price: 420, status: "上架",
+    "image": "https://10tenyearsoneday-glitch.github.io/tenyears_oneday/assets/products/O-D.jpg"},
   ]);
 });
 
